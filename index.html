@@ -1,0 +1,352 @@
+1. ใส่ข้อความล็อก [ข้อความด้านล่าง คัดลอกไปให้หมด]
+
+แก้ไขตามที่บอกด้านล่างนี้เท่านั้น
+ห้ามลบโครงสร้างเดิมของเว็บ
+ห้ามลบ section ใด ๆ ที่มีอยู่แล้ว
+ห้ามลบ script หรือ animation ใด ๆ
+
+ส่วนสำคัญที่ต้องคงไว้ 100%:
+ส่วน Badges (ปุ่มกลมเล็กๆ ด้านบน)
+Status Bar (แถบเช็คคิวงาน)
+ปุ่มเช็คคิวงานแบบเส้นประ
+โครงสร้าง header ทั้งหมด
+
+ถ้าจำเป็นต้องแก้ layout ให้แก้เฉพาะ CSS
+ห้ามลบ HTML element เด็ดขาด
+ถ้าไม่แน่ใจ ให้คงโค้ดเดิมไว้
+
+ 2. ก่อนส่งโค้ด ให้ตรวจสอบว่าทุก section ยังอยู่ครบ
+หากลบส่วนใดส่วนหนึ่งออก ถือว่างานผิดเงื่อนไข
+ถ้าข้อมูลเยอะเกินให้แบ่งพาร์ทมา
+
+    
+ 3. โค้ด (กติกาหลัก ห้ามเปลี่ยนโครงสร้าง) [โน้ตก่อนหน้านี้]
+ใส่ข้อมูลร้านของลูกค้า [นำข้อมูลที่ลูกค้าให้มาใส่ต่อท้าย]
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moomild - Official Store</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+/* ปรับโทนสีตามที่ลูกค้าชอบ: สีเขียวชมพู */
+--bg:#E8F5E9; 
+--main:#F48FB1;
+--dark:#2E7D32;
+--white:#FFFFFF;
+--glow:rgba(244,143,177,0.4);
+--accent:#C8E6C9;
+--status-red:#FF8FB1;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Mitr',sans-serif;}
+
+body{
+background:var(--bg);
+display:flex;
+justify-content:center;
+position: relative;
+overflow-x: hidden;
+min-height: 100vh;
+}
+
+/* --- พื้นหลังอิโมจิฟุ้งๆ --- */
+.bg-emojis {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  font-size: 24px;
+}
+
+.floating-emoji {
+  position: absolute;
+  animation: floatBG 15s infinite linear;
+  opacity: 0.4;
+}
+
+@keyframes floatBG {
+  0% { transform: translateY(110vh) rotate(0deg); }
+  100% { transform: translateY(-10vh) rotate(360deg); }
+}
+
+.container{
+max-width:500px;
+width:100%;
+padding:20px 15px 40px;
+z-index: 1;
+}
+
+.section{
+background:var(--white);
+border-radius:20px;
+padding:25px 20px;
+margin-bottom:20px;
+box-shadow:0 8px 20px rgba(0,0,0,0.05);
+border:2px solid var(--main);
+}
+
+h1,h2,h3{color:var(--dark);}
+.center{text-align:center;}
+
+/* --- โลโก้และอิโมจิรอบโลโก้ --- */
+.logo-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo{
+width:150px;height:150px;
+border-radius:50%;
+overflow:hidden;
+box-shadow:0 6px 20px var(--glow);
+border: 4px solid var(--white);
+position: relative;
+z-index: 2;
+}
+
+.logo img{width:100%;height:100%;object-fit:cover;}
+
+.logo-deco {
+  position: absolute;
+  font-size: 28px;
+  animation: pulse 3s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+.badges{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+.badge{
+background:#fff;
+padding:8px 16px;
+border-radius:25px;
+box-shadow:0 4px 10px var(--glow);
+font-size:13px;
+color:var(--dark);
+border: 1px solid var(--main);
+}
+
+.btn{
+display:block;
+text-align:center;
+padding:14px;
+border-radius:25px;
+text-decoration:none;
+margin-top:15px;
+font-weight:500;
+transition: 0.3s;
+display: flex;
+align-items: center;
+justify-content:center;
+gap: 8px;
+}
+
+.btn-outline{
+background:#fff;
+border:2px dashed var(--main);
+color:var(--dark);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  background-color: var(--status-red);
+  border-radius: 50%;
+  display: inline-block;
+  animation: dotBlink 1.2s infinite ease-in-out;
+  box-shadow: 0 0 8px var(--status-red);
+}
+
+@keyframes dotBlink {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.btn-main{
+background:var(--main);
+color:#fff;
+}
+
+.step{
+display:flex;
+align-items:flex-start;
+gap:12px;
+margin-bottom:12px;
+}
+
+.step-num{
+background:var(--main);
+color:#fff;
+width:26px;height:26px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:13px;
+flex-shrink:0;
+margin-top:2px;
+}
+
+.price-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
+background:#fbf7f9;
+padding:10px 15px;
+border-radius:15px;
+border-left: 4px solid var(--main);
+}
+
+.price-tag{
+background:var(--main);
+color:#fff;
+padding:3px 12px;
+border-radius:20px;
+font-size:14px;
+white-space: nowrap;
+}
+
+.footer{
+text-align:center;
+margin-top:30px;
+}
+
+.socials{
+display:flex;
+gap:8px;
+justify-content:center;
+margin-top:15px;
+}
+
+.socials a{
+flex:1;
+max-width:100px;
+text-align:center;
+padding:8px;
+border-radius:25px;
+background:#fff;
+text-decoration:none;
+color:var(--dark);
+font-size:13px;
+border:1px solid #e8f5e9;
+}
+
+.small{font-size:12px;opacity:.7;margin-top:10px;}
+
+.rule-box {
+background: #fff9c4;
+padding: 15px;
+border-radius: 15px;
+font-size: 14px;
+margin-top: 15px;
+border: 1px dashed #fbc02d;
+}
+</style>
+</head>
+
+<body>
+  <div class="bg-emojis">
+    <span class="floating-emoji" style="left: 10%; animation-delay: 0s;">🌸</span>
+    <span class="floating-emoji" style="left: 25%; animation-delay: 2s;">🌿</span>
+    <span class="floating-emoji" style="left: 45%; animation-delay: 4s;">✨</span>
+    <span class="floating-emoji" style="left: 70%; animation-delay: 6s;">🌸</span>
+    <span class="floating-emoji" style="left: 85%; animation-delay: 8s;">🌿</span>
+  </div>
+
+<div class="container">
+
+<div class="section center" style="border:none;box-shadow:none;background:transparent;">
+
+<div class="logo-wrapper">
+  <span class="logo-deco" style="top: 0; left: 10%;">🌸</span>
+  <span class="logo-deco" style="bottom: 10%; right: 5%;">🌿</span>
+  <span class="logo-deco" style="top: 20%; right: 0%;">✨</span>
+  <div class="logo">
+    <img src="att.be82oFQlt5Q154biR3LCzBXlgJKcQ_gDr4r5yDftOug.jpeg" alt="Moomild logo">
+  </div>
+</div>
+
+<h1>Moomild</h1>
+<p style="color:var(--dark);opacity:.8;margin:10px 0 20px;">
+Welcome to NongMild arsenal! ☁️✨
+</p>
+
+<div class="badges">
+<div class="badge">🎨 บริการรับทำป้าย</div>
+<div class="badge">🧸 ออกแบบบล็อก</div>
+<div class="badge">✨ สีเขียวชมพู</div>
+<div class="badge">📊 มินิมอลสไตล์</div>
+</div>
+
+<a href="https://line.me/ti/p/GoahDlYc9b" class="btn btn-outline">
+<span class="status-dot"></span> เปิดรับคิวนะคะ💧💧
+</a>
+</div>
+
+<div class="section">
+<h2>📝 ขั้นตอนการสั่งซื้อ</h2>
+<div class="step"><div class="step-num">1</div><div>แจ้งแนวงานที่ต้องการจะสั่ง เลือกตูน เลือกบล็อก หัวป้าย (ส่งเป็นภาพให้ชัดเจน)</div></div>
+<div class="step"><div class="step-num">2</div><div>บรีฟรายละเอียดของตัวงานให้ชัดเจน ครบถ้วนทุกตัวอักษร (ทางร้านจะอิงตามรายละเอียดที่ลูกค้าส่งมาทั้งหมด)</div></div>
+<div class="step"><div class="step-num">3</div><div>บรีฟงาน แจ้งรายละเอียดให้ครบถ้วนก่อนโอนทุกครั้ง และโอนเต็มจำนวนเพื่อเริ่มงาน</div></div>
+<div class="step"><div class="step-num">4</div><div>รอรับงานเช็คตามคิว (ร้านไม่รับมัดจำ ไม่รับผ่อน และไม่รับทำงานตามร้านอื่น)</div></div>
+
+<a href="https://drive.google.com/drive/folders/1-icuYjlRmQWjJ4tOoDpJmeAT2hu7RbfW" class="btn btn-main">เลือกตูนการ์ตูน 🧸</a>
+<a href="https://drive.google.com/drive/folders/11mPry8kGZJTS3N-sCIHSzFjx20EWRwXW" class="btn btn-main">ดูงานบล็อกที่ต้องการ 📊</a>
+<a href="https://drive.google.com/drive/folders/1HK020f14zxCGfcAxKUHkGW0LXAv2VJ_X" class="btn btn-outline">ดูตัวอย่างผลงานทั้งหมด ✨</a>
+</div>
+
+<div class="section">
+<h2>💰 เมนูราคางานและตัวอย่างแยกแนว</h2>
+<div class="price-row"><a href="https://drive.google.com/drive/folders/1HK020f14zxCGfcAxKUHkGW0LXAv2VJ_X" style="text-decoration:none; color:inherit;">แนวท้องฟ้า 🌌</a><span class="price-tag">คลิกดูงาน</span></div>
+<div class="price-row"><a href="https://drive.google.com/drive/folders/1tQi5icJg7TiTVwW0LwCGyEKf0t-42hzg" style="text-decoration:none; color:inherit;">แนวน่ารักกึ่ง ads 🧸</a><span class="price-tag">คลิกดูงาน</span></div>
+<div class="price-row"><a href="https://drive.google.com/drive/folders/1gA2udBBZMPWInYkL49TFUh9DmHh38yfW" style="text-decoration:none; color:inherit;">แนวมืด 🖤</a><span class="price-tag">คลิกดูงาน</span></div>
+<div class="price-row"><a href="https://drive.google.com/drive/folders/1ZBEVgv8LBmsc8X9A8jNTNyibwmY_vBmY" style="text-decoration:none; color:inherit;">แนว Circle ⚪️</a><span class="price-tag">คลิกดูงาน</span></div>
+<div class="price-row"><a href="https://drive.google.com/drive/folders/14SaNUaPqX1ZgiKcQLGmy66r24ykAjY28" style="text-decoration:none; color:inherit;">แนวซอฟต์คาวาอี้ 🌸</a><span class="price-tag">คลิกดูงาน</span></div>
+
+<div class="rule-box">
+<strong>📍 เงื่อนไข & กฎของร้าน:</strong><br>
+• ร้านไม่รับมัดจำ ไม่รับผ่อน โอนเต็มจำนวนเท่านั้น<br>
+• ไม่รับทำงานตามร้านอื่น / ขึ้นบล็อกใหม่ต้องมีร่างหรือบรีฟชัดเจน<br>
+• แก้งานได้หากเป็นความผิดของร้าน (หากแก้หลังส่งงาน รับแก้แค่รายละเอียด มี +ค่าแก้จุดละ 20฿)<br>
+• ยกเลิกคืนเงิน 50% หากเริ่มงานแล้วไม่คืนเงินทุกกรณี
+</div>
+</div>
+
+<div class="footer">
+<a href="https://line.me/ti/p/GoahDlYc9b" class="btn btn-main">สั่งงาน / สอบถามทาง LINE 🎀</a>
+<div class="socials">
+<a href="https://www.facebook.com/share/18mLoBfABU/?mibextid=wwXIfr">Facebook</a>
+<a href="https://line.me/ti/p/GoahDlYc9b">Line Official</a>
+<a href="https://drive.google.com/drive/folders/1HK020f14zxCGfcAxKUHkGW0LXAv2VJ_X">Portfolio</a>
+</div>
+<p class="small">© 2026 Moomild - ขอบคุณที่ใช้บริการค่ะ</p>
+</div>
+
+</div>
+</body>
+</html>
